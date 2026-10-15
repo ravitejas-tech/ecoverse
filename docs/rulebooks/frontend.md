@@ -41,6 +41,7 @@ Before writing a `className` with more than a couple of visual classes, search f
 - **Cards are `PopCard`**, labels-on-a-pill are `Sticker`, emoji tiles are `EmojiChip`, ticket tear lines are `Perforation`. Never redraw one with raw classes.
 - **Entrance animation is `Reveal`**, with `order` for stagger. It is pure CSS — never add a JS animation library for entrances.
 - **A button that celebrates is `CelebrateButton`** — it fires theme-coloured confetti from its own position.
+- **Anything that contacts the team is a `WhatsAppLink`** (usually inside `Button asChild`), never a hand-built `wa.me` URL. Messages live in `WHATSAPP_MESSAGES`; event-specific ones are built with `eventBookingMessage`.
 - **A row of cards that would stack into a tall column on phones is a `SwipeGrid`** — a snap carousel below `sm`, a grid above. Short tiles stay a two-column grid instead (`grid-cols-2`).
 - **When a screen pattern appears for the first time** (page header, empty state, form), build it as a primitive and record it here.
 
@@ -82,7 +83,7 @@ Before writing a `className` with more than a couple of visual classes, search f
 
 ## UI primitives
 
-`app/components/ui/` holds hand-written primitives (`Text`, `Button`, `PopCard`, `Sticker`, `Chip`, `EmojiChip`, `FramedPhoto`, `Section`, `Container`, `SwipeGrid`, `Reveal`, `Perforation`, `AnchorLink`, `Logo`, `ThemeToggle`). Variants are declared with `cva` or a variant map inside the primitive.
+`app/components/ui/` holds hand-written primitives (`Text`, `Button`, `PopCard`, `Sticker`, `Chip`, `EmojiChip`, `FramedPhoto`, `WhatsAppLink`, `Section`, `Container`, `SwipeGrid`, `Reveal`, `Perforation`, `AnchorLink`, `Logo`, `ThemeToggle`). Variants are declared with `cva` or a variant map inside the primitive.
 
 - **Never restyle a primitive at the call site.** A new look is a new `variant`, added to the primitive.
 - **Add on demand.** Write a primitive when a second screen needs it, not in anticipation.
