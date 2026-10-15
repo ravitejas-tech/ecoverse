@@ -121,6 +121,9 @@
     --pop-orange: #ff8a3d;
 
     --hard-shadow: #1b1035;
+
+    --brand-logo: url('/brand/logo-light.webp');
+    --brand-logo-full: url('/brand/logo-full-light.webp');
 }
 
 :root[data-theme='dark'] {
@@ -150,6 +153,9 @@
     --pop-orange: #ff9550;
 
     --hard-shadow: #ff5ca8;
+
+    --brand-logo: url('/brand/logo-dark.webp');
+    --brand-logo-full: url('/brand/logo-full-dark.webp');
 }
 
 @utility bg-party-dots {
@@ -166,6 +172,14 @@
         animation-timeline: view();
         animation-range: entry calc(var(--reveal-order, 0) * 5%) cover 30%;
     }
+}
+
+@utility bg-brand-logo {
+    background: var(--brand-logo) left center / contain no-repeat;
+}
+
+@utility bg-brand-logo-full {
+    background: var(--brand-logo-full) left center / contain no-repeat;
 }
 
 @utility scrollbar-none {
