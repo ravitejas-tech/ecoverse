@@ -12,7 +12,7 @@ export function Footer() {
         <footer className='border-t-2 border-border bg-surface'>
             <Container className='flex flex-col gap-10 py-14 md:flex-row md:items-end md:justify-between'>
                 <div className='space-y-4'>
-                    <Logo />
+                    <Logo size='full' />
                     <Text
                         variant='title'
                         className='max-w-sm'>
