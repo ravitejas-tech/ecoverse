@@ -1,8 +1,10 @@
 import { ArrowRight } from 'lucide-react'
 import { Button } from '~/components/ui/button'
 import { Text } from '~/components/ui/text'
+import { WhatsAppLink } from '~/components/ui/whatsapp-link'
+import { WHATSAPP_MESSAGES } from '~/data/contact'
 import { HERO_LEAD, HERO_SCRAWL, HERO_SECONDARY_CTA } from '~/data/landing/hero'
-import { PRIMARY_CTA, SECTION_IDS, sectionHref } from '~/data/navigation'
+import { PRIMARY_CTA_LABEL, SECTION_IDS, sectionHref } from '~/data/navigation'
 
 export function HeroActions({ className }: { className?: string }) {
     return (
@@ -17,10 +19,10 @@ export function HeroActions({ className }: { className?: string }) {
                 <Button
                     asChild
                     size='lg'>
-                    <a href={PRIMARY_CTA.href}>
-                        {PRIMARY_CTA.label}
+                    <WhatsAppLink message={WHATSAPP_MESSAGES.explore}>
+                        {PRIMARY_CTA_LABEL}
                         <ArrowRight />
-                    </a>
+                    </WhatsAppLink>
                 </Button>
                 <Button
                     asChild

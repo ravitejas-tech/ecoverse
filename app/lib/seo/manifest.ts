@@ -13,8 +13,11 @@ export function buildManifest() {
         background_color: THEME_COLORS.light,
         theme_color: THEME_COLORS.light,
         icons: [
-            { src: BRAND_ICONS.svg, sizes: 'any', type: 'image/svg+xml' },
-            ...BRAND_ICONS.any.map(({ path, size }) => ({ src: path, sizes: `${size}x${size}`, type: 'image/png' })),
+            ...[BRAND_ICONS.small, BRAND_ICONS.large].map(({ path, size }) => ({
+                src: path,
+                sizes: `${size}x${size}`,
+                type: 'image/png',
+            })),
             {
                 src: BRAND_ICONS.maskable.path,
                 sizes: `${BRAND_ICONS.maskable.size}x${BRAND_ICONS.maskable.size}`,

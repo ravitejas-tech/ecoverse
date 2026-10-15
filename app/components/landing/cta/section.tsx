@@ -6,9 +6,11 @@ import { Reveal } from '~/components/ui/reveal'
 import { Section } from '~/components/ui/section'
 import { Sticker } from '~/components/ui/sticker'
 import { Text } from '~/components/ui/text'
+import { WhatsAppLink } from '~/components/ui/whatsapp-link'
+import { WHATSAPP_MESSAGES } from '~/data/contact'
 import { CTA_CONFETTI_LABEL, CTA_LEAD, CTA_STICKER, CTA_TITLE } from '~/data/landing/cta'
 import { sectionTitleId } from '~/data/layout/landmarks'
-import { PRIMARY_CTA, SECTION_IDS } from '~/data/navigation'
+import { PRIMARY_CTA_LABEL, SECTION_IDS } from '~/data/navigation'
 
 export function CallToActionSection() {
     return (
@@ -42,10 +44,10 @@ export function CallToActionSection() {
                                 asChild
                                 size='lg'
                                 variant='sunny'>
-                                <a href={PRIMARY_CTA.href}>
-                                    {PRIMARY_CTA.label}
+                                <WhatsAppLink message={WHATSAPP_MESSAGES.explore}>
+                                    {PRIMARY_CTA_LABEL}
                                     <ArrowRight />
-                                </a>
+                                </WhatsAppLink>
                             </Button>
                             <CelebrateButton
                                 size='lg'

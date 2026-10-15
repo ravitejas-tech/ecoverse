@@ -3,9 +3,11 @@ import { Menu, X } from 'lucide-react'
 import { AnchorLink } from '~/components/ui/anchor-link'
 import { Button } from '~/components/ui/button'
 import { PopCard } from '~/components/ui/pop-card'
+import { WhatsAppLink } from '~/components/ui/whatsapp-link'
+import { WHATSAPP_MESSAGES } from '~/data/contact'
 import { NAV_LABELS } from '~/data/layout/landmarks'
 import { MOBILE_MENU_ID, MOBILE_MENU_LABELS } from '~/data/layout/menu'
-import { NAV_LINKS, PRIMARY_CTA } from '~/data/navigation'
+import { NAV_LINKS, PRIMARY_CTA_LABEL } from '~/data/navigation'
 
 export function MobileMenu() {
     const [open, setOpen] = useState(false)
@@ -48,11 +50,11 @@ export function MobileMenu() {
                     <Button
                         asChild
                         className='mt-3 w-full sm:hidden'>
-                        <a
-                            href={PRIMARY_CTA.href}
+                        <WhatsAppLink
+                            message={WHATSAPP_MESSAGES.explore}
                             onClick={() => setOpen(false)}>
-                            {PRIMARY_CTA.label}
-                        </a>
+                            {PRIMARY_CTA_LABEL}
+                        </WhatsAppLink>
                     </Button>
                 </PopCard>
             )}

@@ -9,7 +9,7 @@ export const HERO_TITLE_PUNCH = 'Vibes?'
 export const HERO_TITLE_HIGHLIGHT = 'Immaculate.'
 
 export const HERO_LEAD =
-    'Dance nights, social mixers, workshops and weekend escapes — discover them, book them and walk right in, all from one place. No DMs. No random payment links. Just the party.'
+    'Dance nights, social mixers, workshops and weekend escapes — discover them, book them and walk right in, all from one place. No random payment links. Just the party.'
 
 export const HERO_SECONDARY_CTA = 'How it works'
 

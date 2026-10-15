@@ -5,8 +5,10 @@ import { Button } from '~/components/ui/button'
 import { Container } from '~/components/ui/container'
 import { Logo } from '~/components/ui/logo'
 import { ThemeToggle } from '~/components/ui/theme-toggle'
+import { WhatsAppLink } from '~/components/ui/whatsapp-link'
+import { WHATSAPP_MESSAGES } from '~/data/contact'
 import { NAV_LABELS } from '~/data/layout/landmarks'
-import { HOME_PATH, NAV_LINKS, PRIMARY_CTA } from '~/data/navigation'
+import { HOME_PATH, NAV_LINKS, PRIMARY_CTA_LABEL } from '~/data/navigation'
 
 export function Navbar() {
     return (
@@ -34,7 +36,7 @@ export function Navbar() {
                         asChild
                         size='sm'
                         className='hidden sm:inline-flex'>
-                        <a href={PRIMARY_CTA.href}>{PRIMARY_CTA.label}</a>
+                        <WhatsAppLink message={WHATSAPP_MESSAGES.explore}>{PRIMARY_CTA_LABEL}</WhatsAppLink>
                     </Button>
                     <MobileMenu />
                 </div>

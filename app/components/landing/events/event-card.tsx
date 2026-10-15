@@ -5,8 +5,11 @@ import { Perforation } from '~/components/ui/perforation'
 import { PopCard } from '~/components/ui/pop-card'
 import { Sticker } from '~/components/ui/sticker'
 import { Text } from '~/components/ui/text'
+import { WhatsAppLink } from '~/components/ui/whatsapp-link'
+import { WHATSAPP } from '~/data/contact'
 import { EVENT_BOOK_LABEL, EVENT_PRICE_PREFIX } from '~/data/landing/events'
 import { formatEventDay, formatEventTime, formatRupees } from '~/lib/format'
+import { eventBookingMessage } from '~/lib/whatsapp'
 import { eventAnchorId } from '~/data/landing/events'
 import type { EventPreview } from '~/types/landing'
 
@@ -14,9 +17,8 @@ export interface EventCardProps {
     event: EventPreview
 }
 
-export function EventCard({
-    event: { slug, title, category, photo, startsAt, city, priceFrom, tag, tone },
-}: EventCardProps) {
+export function EventCard({ event }: EventCardProps) {
+    const { slug, title, category, photo, startsAt, city, priceFrom, tag, tone } = event
     const when = `${formatEventDay(startsAt)} · ${formatEventTime(startsAt)}`
 
     return (
@@ -68,11 +70,14 @@ export function EventCard({
                         <Text variant='meta'>{EVENT_PRICE_PREFIX}</Text>
                         <Text variant='price'>{formatRupees(priceFrom)}</Text>
                     </div>
-                    {/* TODO: link to the event page once ticketing ships */}
                     <CelebrateButton
-                        size='sm'
-                        aria-label={`${EVENT_BOOK_LABEL}: ${title}`}>
-                        {EVENT_BOOK_LABEL}
+                        asChild
+                        size='sm'>
+                        <WhatsAppLink
+                            message={eventBookingMessage(event)}
+                            aria-label={`${EVENT_BOOK_LABEL}: ${title}${WHATSAPP.hint}`}>
+                            {EVENT_BOOK_LABEL}
+                        </WhatsAppLink>
                     </CelebrateButton>
                 </div>
             </article>

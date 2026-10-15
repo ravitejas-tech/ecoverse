@@ -1,28 +1,24 @@
-import { Chip } from '~/components/ui/chip'
-import { Text } from '~/components/ui/text'
-import { BRAND_MONOGRAM, BRAND_WORDMARK } from '~/data/brand'
+import { cva, type VariantProps } from 'class-variance-authority'
+import { BRAND_NAME } from '~/data/brand'
 
-export function Logo() {
+const logoVariants = cva('block shrink-0', {
+    variants: {
+        size: {
+            compact: 'bg-brand-logo h-10 w-37 sm:h-12 sm:w-44',
+            full: 'bg-brand-logo-full h-20 w-63',
+        },
+    },
+    defaultVariants: { size: 'compact' },
+})
+
+export type LogoProps = VariantProps<typeof logoVariants>
+
+export function Logo({ size }: LogoProps) {
     return (
-        <span className='inline-flex items-center gap-2.5'>
-            <Chip
-                aria-hidden
-                size='sm'
-                tone='pink'
-                tilt='hard-left'
-                className='group-hover:rotate-6'>
-                <Text
-                    as='span'
-                    variant='title'
-                    tone='on-pop'>
-                    {BRAND_MONOGRAM}
-                </Text>
-            </Chip>
-            <Text
-                as='span'
-                variant='title'>
-                {BRAND_WORDMARK}
-            </Text>
-        </span>
+        <span
+            role='img'
+            aria-label={BRAND_NAME}
+            className={logoVariants({ size })}
+        />
     )
 }
