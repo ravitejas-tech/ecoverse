@@ -18,4 +18,4 @@ export const NAV_LINKS = [
     { label: 'Past Events', href: sectionHref(SECTION_IDS.shoutouts) },
 ] as const
 
-export const PRIMARY_CTA = { label: 'Explore Events', href: sectionHref(SECTION_IDS.events) } as const
+export const PRIMARY_CTA_LABEL = 'Explore Events'
