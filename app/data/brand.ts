@@ -1,0 +1,7 @@
+export const BRAND_NAME = 'Echoverse Hub'
+
+export const BRAND_WORDMARK = 'echoverse'
+
+export const BRAND_MONOGRAM = 'e'
+
+export const BRAND_TAGLINE = "If it's Echoverse, you book it on Echoverse."
