@@ -17,12 +17,10 @@ export const SOCIAL_IMAGE = {
 } as const
 
 export const BRAND_ICONS = {
-    svg: '/favicon.svg',
+    favicon: { path: '/icons/favicon-32.png', size: 32 },
     appleTouch: '/icons/apple-touch-icon.png',
-    any: [
-        { path: '/icons/icon-192.png', size: 192 },
-        { path: '/icons/icon-512.png', size: 512 },
-    ],
+    small: { path: '/icons/icon-192.png', size: 192 },
+    large: { path: '/icons/icon-512.png', size: 512 },
     maskable: { path: '/icons/icon-maskable-512.png', size: 512 },
 } as const
 
