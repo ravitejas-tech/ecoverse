@@ -9,7 +9,7 @@ import type { EventPreview } from '~/types/landing'
 export function buildHomeSchema({ title, description, path }: PageMeta, events: EventPreview[]) {
     const organization = { '@id': absoluteUrl(SCHEMA_IDS.organization) }
     const website = { '@id': absoluteUrl(SCHEMA_IDS.website) }
-    const logo = BRAND_ICONS.maskable
+    const logo = BRAND_ICONS.large
 
     return {
         '@context': SCHEMA_CONTEXT,
