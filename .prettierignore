@@ -1,0 +1,6 @@
+node_modules
+build
+.react-router
+.yarn
+.DS_Store
+coverage
