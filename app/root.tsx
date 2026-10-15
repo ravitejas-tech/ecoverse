@@ -11,8 +11,7 @@ import type { Route } from './+types/root'
 import './global.css'
 
 export const links: Route.LinksFunction = () => [
-    { rel: 'icon', type: 'image/svg+xml', href: BRAND_ICONS.svg },
-    ...BRAND_ICONS.any.map(({ path, size }) => ({
+    ...[BRAND_ICONS.favicon, BRAND_ICONS.small].map(({ path, size }) => ({
         rel: 'icon',
         type: 'image/png',
         sizes: `${size}x${size}`,
