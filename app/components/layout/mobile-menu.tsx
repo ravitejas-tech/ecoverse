@@ -1,13 +1,12 @@
 import { useEffect, useState } from 'react'
+import { Link } from 'react-router'
 import { Menu, X } from 'lucide-react'
 import { AnchorLink } from '~/components/ui/anchor-link'
 import { Button } from '~/components/ui/button'
 import { PopCard } from '~/components/ui/pop-card'
-import { WhatsAppLink } from '~/components/ui/whatsapp-link'
-import { WHATSAPP_MESSAGES } from '~/data/contact'
 import { NAV_LABELS } from '~/data/layout/landmarks'
 import { MOBILE_MENU_ID, MOBILE_MENU_LABELS } from '~/data/layout/menu'
-import { NAV_LINKS, PRIMARY_CTA_LABEL } from '~/data/navigation'
+import { NAV_LINKS, PATHS, PRIMARY_CTA_LABEL } from '~/data/navigation'
 
 export function MobileMenu() {
     const [open, setOpen] = useState(false)
@@ -37,10 +36,10 @@ export function MobileMenu() {
                     <nav
                         aria-label={NAV_LABELS.mobile}
                         className='flex flex-col'>
-                        {NAV_LINKS.map(({ label, href }) => (
+                        {NAV_LINKS.map(({ label, to }) => (
                             <AnchorLink
-                                key={href}
-                                href={href}
+                                key={to}
+                                to={to}
                                 layout='block'
                                 onClick={() => setOpen(false)}>
                                 {label}
@@ -50,11 +49,11 @@ export function MobileMenu() {
                     <Button
                         asChild
                         className='mt-3 w-full sm:hidden'>
-                        <WhatsAppLink
-                            message={WHATSAPP_MESSAGES.explore}
+                        <Link
+                            to={PATHS.events}
                             onClick={() => setOpen(false)}>
                             {PRIMARY_CTA_LABEL}
-                        </WhatsAppLink>
+                        </Link>
                     </Button>
                 </PopCard>
             )}
