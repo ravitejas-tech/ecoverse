@@ -1,10 +1,10 @@
 import { ArrowRight } from 'lucide-react'
+import { Link } from 'react-router'
 import { Button } from '~/components/ui/button'
+import { ButtonRow } from '~/components/ui/button-row'
 import { Text } from '~/components/ui/text'
-import { WhatsAppLink } from '~/components/ui/whatsapp-link'
-import { WHATSAPP_MESSAGES } from '~/data/contact'
 import { HERO_LEAD, HERO_SCRAWL, HERO_SECONDARY_CTA } from '~/data/landing/hero'
-import { PRIMARY_CTA_LABEL, SECTION_IDS, sectionHref } from '~/data/navigation'
+import { PATHS, PRIMARY_CTA_LABEL, SECTION_IDS, sectionHref } from '~/data/navigation'
 
 export function HeroActions({ className }: { className?: string }) {
     return (
@@ -15,14 +15,14 @@ export function HeroActions({ className }: { className?: string }) {
                 className='mb-8 hidden max-w-xl sm:block'>
                 {HERO_LEAD}
             </Text>
-            <div className='grid gap-3 sm:flex sm:flex-wrap sm:items-center sm:gap-4'>
+            <ButtonRow className='sm:items-center sm:gap-4'>
                 <Button
                     asChild
                     size='lg'>
-                    <WhatsAppLink message={WHATSAPP_MESSAGES.explore}>
+                    <Link to={PATHS.events}>
                         {PRIMARY_CTA_LABEL}
-                        <ArrowRight />
-                    </WhatsAppLink>
+                        <ArrowRight aria-hidden />
+                    </Link>
                 </Button>
                 <Button
                     asChild
@@ -31,7 +31,7 @@ export function HeroActions({ className }: { className?: string }) {
                     className='hidden sm:inline-flex'>
                     <a href={sectionHref(SECTION_IDS.journey)}>{HERO_SECONDARY_CTA}</a>
                 </Button>
-            </div>
+            </ButtonRow>
             <Text
                 variant='marker'
                 tone='accent'
