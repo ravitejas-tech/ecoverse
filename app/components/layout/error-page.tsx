@@ -6,7 +6,7 @@ import { Sticker } from '~/components/ui/sticker'
 import { Text } from '~/components/ui/text'
 import { BRAND_NAME } from '~/data/brand'
 import { ERROR_HOME_LABEL, ERROR_STICKER, ERROR_ROBOTS } from '~/data/ui/error'
-import { HOME_PATH } from '~/data/navigation'
+import { PATHS } from '~/data/navigation'
 
 export interface ErrorPageProps {
     title: string
@@ -38,7 +38,7 @@ export function ErrorPage({ title, details, stack }: ErrorPageProps) {
                 {details}
             </Text>
             <Button asChild>
-                <Link to={HOME_PATH}>{ERROR_HOME_LABEL}</Link>
+                <Link to={PATHS.home}>{ERROR_HOME_LABEL}</Link>
             </Button>
             {stack && (
                 <PopCard
