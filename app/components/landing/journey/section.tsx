@@ -1,5 +1,5 @@
 import { JourneyStep } from '~/components/landing/journey/journey-step'
-import { SectionHeading } from '~/components/landing/section-heading'
+import { SectionHeading } from '~/components/ui/section-heading'
 import { Reveal } from '~/components/ui/reveal'
 import { Section } from '~/components/ui/section'
 import { JOURNEY_HEADING, JOURNEY_STEPS } from '~/data/landing/journey'
