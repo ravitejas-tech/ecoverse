@@ -26,3 +26,15 @@ export function formatEventDay(startsAt: string) {
 export function formatEventTime(startsAt: string) {
     return eventTime.format(new Date(startsAt))
 }
+
+const fullDate = new Intl.DateTimeFormat(EVENT_LOCALE, {
+    weekday: 'long',
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+    timeZone: EVENT_TIME_ZONE,
+})
+
+export function formatFullDate(instant: string) {
+    return fullDate.format(new Date(instant))
+}
