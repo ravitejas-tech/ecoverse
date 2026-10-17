@@ -1,4 +1,4 @@
-import { PHOTO_SHAPES, type PhotoShape } from '~/data/ui/media'
+import { PHOTO_SHAPES, REMOTE_PHOTO, type PhotoShape } from '~/data/ui/media'
 
 export function photoVariant(src: string, width: number) {
     return src.replace(/(\.\w+)$/, `-${width}$1`)
@@ -6,5 +6,6 @@ export function photoVariant(src: string, width: number) {
 
 export function photoSrcSet(src: string, shape: PhotoShape) {
     const { width, smallerWidths } = PHOTO_SHAPES[shape]
+    if (REMOTE_PHOTO.test(src)) return undefined
     return [...smallerWidths.map((w) => `${photoVariant(src, w)} ${w}w`), `${src} ${width}w`].join(', ')
 }
