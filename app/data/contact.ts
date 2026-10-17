@@ -1,11 +1,26 @@
 export const WHATSAPP = {
     number: '918484830110',
+    display: '+91 84848 30110',
     linkBase: 'https://wa.me',
     hint: ' (opens WhatsApp)',
 } as const
 
 export const WHATSAPP_MESSAGES = {
-    explore: "Hi Echoverse Hub! 👋 I'd love to know what's coming up. Could you share the upcoming events?",
-    booking: (event: string, when: string, city: string, price: string) =>
-        `Hi Echoverse Hub! 🎉 I'd like to book ${event} on ${when} in ${city} (from ${price}). Could you help me with the tickets?`,
+    help: 'Hi Echoverse Hub! 👋 I have a question.',
+    eventQuestion: (event: string, day: string) => `Hi Echoverse Hub! 👋 I have a question about ${event} on ${day}.`,
+} as const
+
+export const CONTACT_LABELS = {
+    whatsapp: 'Chat on WhatsApp',
+    ask: 'Ask us on WhatsApp',
+} as const
+
+export const EMAIL = {
+    address: 'hello@echoversehub.com',
+    href: 'mailto:hello@echoversehub.com',
+} as const
+
+export const INSTAGRAM = {
+    handle: '@echoversehub',
+    url: 'https://www.instagram.com/echoversehub',
 } as const
