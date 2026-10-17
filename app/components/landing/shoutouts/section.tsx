@@ -1,5 +1,5 @@
-import { SectionHeading } from '~/components/landing/section-heading'
-import { Polaroid } from '~/components/landing/shoutouts/polaroid'
+import { SectionHeading } from '~/components/ui/section-heading'
+import { Polaroid } from '~/components/ui/polaroid'
 import { Reveal } from '~/components/ui/reveal'
 import { Section } from '~/components/ui/section'
 import { SwipeGrid } from '~/components/ui/swipe-grid'
