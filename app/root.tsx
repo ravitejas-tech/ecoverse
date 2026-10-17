@@ -1,7 +1,9 @@
-import type { ReactNode } from 'react'
+import { lazy, Suspense, type ReactNode } from 'react'
 import { isRouteErrorResponse, Links, Meta, Outlet, Scripts, ScrollRestoration } from 'react-router'
 import { ErrorPage } from '~/components/layout/error-page'
+import { PageLoader } from '~/components/layout/page-loader'
 import { SkipLink } from '~/components/layout/skip-link'
+import { useHydrated } from '~/hooks/use-hydrated'
 import { ERROR_COPY } from '~/data/ui/error'
 import { SEO_FILES } from '~/data/seo/routes'
 import { BRAND_ICONS, SITE, THEME_COLORS } from '~/data/seo/site'
@@ -61,8 +63,25 @@ export function Layout({ children }: { children: ReactNode }) {
     )
 }
 
+const Toaster = lazy(() => import('~/components/ui/toaster').then(({ Toaster }) => ({ default: Toaster })))
+
 export default function App() {
-    return <Outlet />
+    const hydrated = useHydrated()
+
+    return (
+        <>
+            <Outlet />
+            {hydrated && (
+                <Suspense>
+                    <Toaster />
+                </Suspense>
+            )}
+        </>
+    )
+}
+
+export function HydrateFallback() {
+    return <PageLoader />
 }
 
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
