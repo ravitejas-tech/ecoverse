@@ -3,42 +3,51 @@ import { Perforation } from '~/components/ui/perforation'
 import { PopCard } from '~/components/ui/pop-card'
 import { Sticker } from '~/components/ui/sticker'
 import { Text } from '~/components/ui/text'
-import { FEATURED_EVENT } from '~/data/landing/events'
+import { TicketStrip } from '~/components/ui/ticket-strip'
 import { SAMPLE_TICKET } from '~/data/landing/ticket'
 import { formatEventDay, formatEventTime, formatRupees } from '~/lib/format'
+import type { EventSummary } from '~/types/events'
 
-export function TicketPreview() {
-    const { title, startsAt, city, priceFrom } = FEATURED_EVENT
+export interface TicketPreviewProps {
+    event?: EventSummary
+}
+
+export function TicketPreview({ event }: TicketPreviewProps) {
+    const when = event
+        ? `${formatEventDay(event.startsAt)} · ${formatEventTime(event.startsAt)} · ${event.city}`
+        : SAMPLE_TICKET.fallbackWhen
 
     return (
         <PopCard
             tilt='right'
             className='w-full max-w-sm overflow-hidden sm:shadow-pop-lg'>
-            <div className='border-b-2 border-border bg-pop-pink px-5 py-3 sm:px-6'>
+            <TicketStrip tone='pink'>
                 <Text
                     variant='sticker'
                     tone='on-pop'>
                     {SAMPLE_TICKET.header}
                 </Text>
-            </div>
+            </TicketStrip>
             <div className='space-y-3 p-5 sm:space-y-4 sm:p-6'>
-                <Text variant='heading'>{title}</Text>
+                <Text variant='heading'>{event?.title ?? SAMPLE_TICKET.fallbackTitle}</Text>
                 <Text
                     variant='label'
                     tone='secondary'>
-                    {`${formatEventDay(startsAt)} · ${formatEventTime(startsAt)} · ${city}`}
+                    {when}
                 </Text>
                 <div className='flex items-center gap-3'>
                     <Sticker
                         tone='lime'
                         tilt='left'>
-                        {SAMPLE_TICKET.pass}
+                        {event?.categoryLabel ?? SAMPLE_TICKET.pass}
                     </Sticker>
-                    <Text
-                        as='span'
-                        variant='price'>
-                        {formatRupees(priceFrom)}
-                    </Text>
+                    {event?.priceFrom != null && (
+                        <Text
+                            as='span'
+                            variant='price'>
+                            {formatRupees(event.priceFrom)}
+                        </Text>
+                    )}
                 </div>
             </div>
             <Perforation />
