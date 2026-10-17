@@ -1,4 +1,5 @@
 import { Outlet } from 'react-router'
+import { Analytics } from '~/components/layout/analytics'
 import { Footer } from '~/components/layout/footer'
 import { Navbar } from '~/components/layout/navbar'
 import { MAIN_CONTENT_ID } from '~/data/layout/landmarks'
@@ -13,6 +14,7 @@ export default function PublicLayout() {
                 <Outlet />
             </main>
             <Footer />
+            <Analytics />
         </div>
     )
 }
