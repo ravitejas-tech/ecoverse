@@ -6,23 +6,36 @@ import { JourneySection } from '~/components/landing/journey/section'
 import { MarqueeBand } from '~/components/landing/marquee/band'
 import { ShoutoutsSection } from '~/components/landing/shoutouts/section'
 import { VibeCheckSection } from '~/components/landing/vibe-check/section'
-import { UPCOMING_EVENTS } from '~/data/landing/events'
+import { HOME_EVENTS_LIMIT } from '~/data/landing/events'
 import { LANDING_PAGE } from '~/data/landing/meta'
 import { buildHomeSchema } from '~/lib/seo/home-schema'
 import { buildPageMeta } from '~/lib/seo/meta'
 import type { Route } from './+types/index'
 
-export const meta: Route.MetaFunction = () => [
+async function loadHome() {
+    const { loadUpcomingEvents } = await import('~/services/event-catalog')
+    return { events: await loadUpcomingEvents() }
+}
+
+export async function loader() {
+    return loadHome()
+}
+
+export async function clientLoader() {
+    return loadHome()
+}
+
+export const meta: Route.MetaFunction = ({ loaderData }) => [
     ...buildPageMeta(LANDING_PAGE),
-    { 'script:ld+json': buildHomeSchema(LANDING_PAGE, UPCOMING_EVENTS) },
+    { 'script:ld+json': buildHomeSchema(LANDING_PAGE, loaderData?.events ?? []) },
 ]
 
-export default function Home() {
+export default function Home({ loaderData: { events } }: Route.ComponentProps) {
     return (
         <>
-            <HeroSection />
+            <HeroSection featured={events[0]} />
             <MarqueeBand />
-            <EventsSection />
+            <EventsSection events={events.slice(0, HOME_EVENTS_LIMIT)} />
             <ExperiencesSection />
             <JourneySection />
             <VibeCheckSection />
