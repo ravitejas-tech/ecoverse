@@ -1,0 +1,37 @@
+export const AUTH_COPY = {
+    login: {
+        title: 'Sign in',
+        lead: 'Echoverse team only. Use the email you were invited with.',
+        email: 'Email',
+        password: 'Password',
+        submit: 'Sign in',
+        forgot: 'Forgot your password?',
+        notStaff: "This account isn't on the Echoverse team. Ask a Super Admin to invite you.",
+    },
+    reset: {
+        title: 'Reset your password',
+        lead: "We'll email you a link to set a new one.",
+        submit: 'Email me a link',
+        back: 'Back to sign in',
+        sent: 'Check your email for the link.',
+    },
+    setPassword: {
+        title: 'Set your password',
+        lead: 'Pick something you can remember. At least 8 characters.',
+        password: 'New password',
+        confirm: 'Type it again',
+        submit: 'Save and continue',
+        saved: 'Password saved. Welcome in!',
+        expiredTitle: 'This link has expired',
+        expiredLead: 'Links work once and only for a short while. Ask for a new one from the sign-in page.',
+        expiredAction: 'Go to sign in',
+    },
+    errors: {
+        signIn: "That email and password don't match.",
+        generic: 'Something went wrong. Try again.',
+        email: 'Enter a valid email address',
+        password: 'Enter your password',
+        shortPassword: 'Use at least 8 characters',
+        mismatch: "The two passwords don't match",
+    },
+} as const
