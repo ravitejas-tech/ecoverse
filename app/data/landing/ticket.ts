@@ -3,6 +3,8 @@ export const SAMPLE_TICKET = {
     pass: 'Early Bird',
     bookingId: 'ECH-PUN-261114-A82F4',
     scanHint: 'Scan at the gate',
+    fallbackTitle: 'Your next night out',
+    fallbackWhen: 'New dates dropping soon',
 } as const
 
 export const QR_PATTERN = [
