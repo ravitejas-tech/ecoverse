@@ -36,7 +36,7 @@ Conventional Commits:
 
 **Types:** `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `build`, `ci`, `chore`, `revert`. No others.
 
-**Scopes:** `web` (the React app), `docs` (rulebooks, PRD), or omit for repo-wide changes.
+**Scopes:** `web` (the website in `app/`), `admin` (the admin panel in `admin/`), `supabase` (schema, SQL and edge functions), `docs` (rulebooks, PRD), or omit for repo-wide changes.
 
 **Subject:** imperative mood ("add", not "added"), lowercase after the colon, no trailing period, under 72 chars. Name the change, not the file — `fix(web): stop hero stickers covering the ticket`, never `fix(web): update hero.ts`.
 
