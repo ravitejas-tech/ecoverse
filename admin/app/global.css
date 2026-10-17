@@ -1,0 +1,146 @@
+@import 'tailwindcss';
+@import '@fontsource-variable/bricolage-grotesque';
+@import '@fontsource-variable/plus-jakarta-sans';
+
+@theme {
+    --font-display: 'Bricolage Grotesque Variable', ui-sans-serif, system-ui, sans-serif;
+    --font-sans: 'Plus Jakarta Sans Variable', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+    --container-8xl: 100rem;
+
+    --animate-pop-in: pop-in 0.18s ease-out both;
+
+    @keyframes pop-in {
+        from {
+            opacity: 0;
+            scale: 0.96;
+        }
+        to {
+            opacity: 1;
+            scale: 1;
+        }
+    }
+}
+
+@theme inline {
+    --color-bg: var(--bg);
+    --color-surface: var(--surface);
+    --color-surface-muted: var(--surface-muted);
+    --color-border: var(--border);
+
+    --color-text-primary: var(--text-primary);
+    --color-text-secondary: var(--text-secondary);
+    --color-text-muted: var(--text-muted);
+
+    --color-accent: var(--accent);
+    --color-accent-hover: var(--accent-hover);
+    --color-accent-foreground: var(--accent-foreground);
+    --color-accent-text: var(--accent-text);
+
+    --color-on-pop: var(--on-pop);
+    --color-pop-pink: var(--pop-pink);
+    --color-pop-yellow: var(--pop-yellow);
+    --color-pop-cyan: var(--pop-cyan);
+    --color-pop-lime: var(--pop-lime);
+    --color-pop-violet: var(--pop-violet);
+    --color-pop-orange: var(--pop-orange);
+
+    --shadow-pop-sm: 2px 2px 0 0 var(--hard-shadow);
+    --shadow-pop: 5px 5px 0 0 var(--hard-shadow);
+    --shadow-pop-lg: 8px 8px 0 0 var(--hard-shadow);
+}
+
+:root {
+    color-scheme: light;
+
+    --bg: #fff6ea;
+    --surface: #ffffff;
+    --surface-muted: #ffebd2;
+    --border: #1b1035;
+    --dot: #f3d9b8;
+
+    --text-primary: #1b1035;
+    --text-secondary: #4b3f6b;
+    --text-muted: #6f6590;
+
+    --accent: #ff4f9a;
+    --accent-hover: #ff3388;
+    --accent-foreground: #1b1035;
+    --accent-text: #d6246f;
+
+    --on-pop: #1b1035;
+    --pop-pink: #ff4f9a;
+    --pop-yellow: #ffd43b;
+    --pop-cyan: #3ccff5;
+    --pop-lime: #9fea4c;
+    --pop-violet: #a58bff;
+    --pop-orange: #ff8a3d;
+
+    --hard-shadow: #1b1035;
+
+    --brand-logo: url('/brand/logo-light.webp');
+}
+
+:root[data-theme='dark'] {
+    color-scheme: dark;
+
+    --bg: #140c28;
+    --surface: #1f1540;
+    --surface-muted: #2a1e52;
+    --border: #fff1de;
+    --dot: #2c2052;
+
+    --text-primary: #fff4e6;
+    --text-secondary: #d5c9ef;
+    --text-muted: #a99ccb;
+
+    --accent: #ff5ca8;
+    --accent-hover: #ff79b8;
+    --accent-foreground: #1b1035;
+    --accent-text: #ff8cc2;
+
+    --on-pop: #1b1035;
+    --pop-pink: #ff5ca8;
+    --pop-yellow: #ffd84d;
+    --pop-cyan: #4fd8ff;
+    --pop-lime: #a8f25a;
+    --pop-violet: #b49cff;
+    --pop-orange: #ff9550;
+
+    --hard-shadow: #ff5ca8;
+
+    --brand-logo: url('/brand/logo-dark.webp');
+}
+
+@utility bg-party-dots {
+    background-image: radial-gradient(var(--dot) 1.5px, transparent 1.5px);
+    background-size: 22px 22px;
+}
+
+@utility bg-brand-logo {
+    background: var(--brand-logo) left center / contain no-repeat;
+}
+
+@utility scrollbar-none {
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
+}
+
+@layer base {
+    html,
+    body {
+        @apply bg-bg font-sans text-text-primary antialiased;
+        min-height: 100vh;
+    }
+
+    ::selection {
+        @apply bg-pop-yellow text-on-pop;
+    }
+
+    input[type='search']::-webkit-search-cancel-button {
+        appearance: none;
+    }
+}
