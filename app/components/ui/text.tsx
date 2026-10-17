@@ -13,6 +13,7 @@ const textVariants = cva('', {
             sticker: 'font-display text-xs font-extrabold tracking-wider uppercase',
             meta: 'text-xs font-bold tracking-widest uppercase',
             title: 'font-display text-xl font-bold tracking-tight',
+            subtitle: 'font-display text-lg/snug font-bold tracking-tight',
             shout: 'font-display text-xl font-extrabold tracking-tight uppercase',
             heading: 'font-display text-2xl font-extrabold tracking-tight sm:text-3xl',
             display:
