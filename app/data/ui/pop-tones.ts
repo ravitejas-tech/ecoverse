@@ -8,3 +8,5 @@ export const POP_FILLS = {
 } as const
 
 export type PopTone = keyof typeof POP_FILLS
+
+export const POP_TONES = Object.keys(POP_FILLS) as PopTone[]
