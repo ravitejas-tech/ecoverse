@@ -3,6 +3,9 @@
     "version": "0.1.0",
     "private": true,
     "type": "module",
+    "workspaces": [
+        "admin"
+    ],
     "scripts": {
         "dev": "react-router dev",
         "build": "yarn ts:check && react-router build",
@@ -10,7 +13,13 @@
         "ts:check": "react-router typegen && tsc",
         "lint": "eslint app/",
         "lint:fix": "eslint app/ --fix",
-        "format": "prettier --write \"app/**/*.{ts,tsx,css}\""
+        "format": "prettier --write \"app/**/*.{ts,tsx,css}\"",
+        "dev:admin": "yarn workspace echoverse-admin dev",
+        "db:start": "supabase start",
+        "db:stop": "supabase stop",
+        "db:reset": "supabase db reset",
+        "db:types": "supabase gen types typescript --local > app/types/database.ts && cp app/types/database.ts admin/app/types/database.ts && prettier --write app/types/database.ts admin/app/types/database.ts",
+        "functions:serve": "supabase functions serve --env-file supabase/functions/.env"
     },
     "engines": {
         "node": ">=22.22.0"
@@ -20,17 +29,25 @@
         "@fontsource-variable/bricolage-grotesque": "^5.3.0",
         "@fontsource-variable/plus-jakarta-sans": "^5.3.0",
         "@fontsource/permanent-marker": "^5.3.0",
+        "@hookform/resolvers": "^5.9.1",
         "@radix-ui/react-slot": "^1.5.0",
         "@react-router/node": "^8.4.0",
+        "@supabase/supabase-js": "^2.118.0",
+        "@tanstack/react-query": "^5.104.3",
         "canvas-confetti": "^1.9.4",
         "class-variance-authority": "^0.7.1",
         "clsx": "^2.1.1",
         "isbot": "^5.2.2",
         "lucide-react": "^1.57.0",
+        "qrcode": "^1.5.4",
         "react": "^19.3.0",
         "react-dom": "^19.3.0",
+        "react-hook-form": "^7.90.0",
+        "react-hot-toast": "^2.6.1",
+        "react-query-kit": "^3.4.0",
         "react-router": "^8.4.0",
-        "tailwind-merge": "^3.7.0"
+        "tailwind-merge": "^3.7.0",
+        "zod": "^4.6.7"
     },
     "devDependencies": {
         "@eslint/js": "^9",
@@ -38,6 +55,7 @@
         "@tailwindcss/vite": "^4.3.3",
         "@types/canvas-confetti": "^1.9.0",
         "@types/node": "^22",
+        "@types/qrcode": "^1.5.6",
         "@types/react": "^19.3.0",
         "@types/react-dom": "^19.3.0",
         "eslint": "^9",
@@ -45,6 +63,7 @@
         "eslint-plugin-react": "^7.37.5",
         "eslint-plugin-react-hooks": "^7.1.1",
         "prettier": "^3.9.10",
+        "supabase": "^2.121.0",
         "tailwindcss": "^4.3.3",
         "typescript": "~6.0.3",
         "typescript-eslint": "^8.71.2",
