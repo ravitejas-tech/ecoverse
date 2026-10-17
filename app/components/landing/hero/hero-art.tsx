@@ -2,8 +2,14 @@ import { TicketPreview } from '~/components/landing/hero/ticket-preview'
 import { Sticker } from '~/components/ui/sticker'
 import { HERO_STICKERS } from '~/data/landing/hero'
 import { cn } from '~/lib/utils'
+import type { EventSummary } from '~/types/events'
 
-export function HeroArt({ className }: { className?: string }) {
+export interface HeroArtProps {
+    event?: EventSummary
+    className?: string
+}
+
+export function HeroArt({ event, className }: HeroArtProps) {
     return (
         <div
             className={cn(
@@ -20,7 +26,7 @@ export function HeroArt({ className }: { className?: string }) {
                     aria-hidden
                 />
             </div>
-            <TicketPreview />
+            <TicketPreview event={event} />
             <div className='hidden sm:contents'>
                 {HERO_STICKERS.map(({ label, tone, tilt, placement }) => (
                     <Sticker
