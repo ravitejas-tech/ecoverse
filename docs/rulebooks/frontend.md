@@ -1,6 +1,6 @@
 # Frontend Rules
 
-React 19 + React Router 8 (SPA mode, `/` and the SEO files prerendered) + TypeScript + Tailwind 4. Applies to `app/`.
+React 19 + React Router 8 (SPA mode; the public pages, every published event page and the SEO files are prerendered) + TypeScript + Tailwind 4 + Supabase. Applies to `app/`. The admin panel follows these rules too, with the additions in [admin.md](admin.md).
 
 ## Reusability
 
@@ -41,7 +41,10 @@ Before writing a `className` with more than a couple of visual classes, search f
 - **Cards are `PopCard`**, labels-on-a-pill are `Sticker`, emoji tiles are `EmojiChip`, ticket tear lines are `Perforation`. Never redraw one with raw classes.
 - **Entrance animation is `Reveal`**, with `order` for stagger. It is pure CSS — never add a JS animation library for entrances.
 - **A button that celebrates is `CelebrateButton`** — it fires theme-coloured confetti from its own position.
-- **Anything that contacts the team is a `WhatsAppLink`** (usually inside `Button asChild`), never a hand-built `wa.me` URL. Messages live in `WHATSAPP_MESSAGES`; event-specific ones are built with `eventBookingMessage`.
+- **Anything that contacts the team is a `WhatsAppButton`** (or a `WhatsAppLink` inside `Button asChild` for custom layouts), never a hand-built `wa.me` URL. Messages live in `WHATSAPP_MESSAGES`. Sharing a link to WhatsApp uses `whatsappShareUrl`.
+- **Booking never goes through WhatsApp.** Book Now leads to the event page and then to `/events/:slug/book`; Explore Events leads to `/events`.
+- **A page's main heading is `SectionHeading level='h1'`.** An empty result is an `EmptyState` (`level='h1'` when it is the whole page).
+- **A ticket is a `PopCard` with a `TicketStrip` header and a `Perforation`.** That covers the landing preview and the real ticket card. A real QR code is `QrCode` with value `ECHOVERSE:<qr_token>`.
 - **A row of cards that would stack into a tall column on phones is a `SwipeGrid`** — a snap carousel below `sm`, a grid above. Short tiles stay a two-column grid instead (`grid-cols-2`).
 - **When a screen pattern appears for the first time** (page header, empty state, form), build it as a primitive and record it here.
 
@@ -71,19 +74,40 @@ Before writing a `className` with more than a couple of visual classes, search f
 |---|---|
 | public pages (navbar + footer) | `routes/layout.tsx` |
 | `/` | `routes/index.tsx` |
-| `/events` (future) | `routes/events/index.tsx` |
-| `/events/:slug` (future) | `routes/events/$slug.tsx` |
-| `/admin` layout (future) | `routes/admin/layout.tsx` |
+| `/events` | `routes/events/index.tsx` |
+| `/events/:slug` | `routes/events/$slug.tsx` |
+| `/events/:slug/book` | `routes/events/$slug.book.tsx` |
+| `/tickets/:token` | `routes/tickets.$token.tsx` |
+| `/my-tickets`, `/past-events`, `/about`, `/faqs`, `/contact`, `/terms`, `/privacy`, `/refund-policy` | `routes/<name>.tsx` |
+
+The admin panel is a separate app in `admin/`, not a route here.
 
 **Routes are assembled explicitly in `app/routes.ts`.** A file's name has no effect on the URL it serves, so the convention is a discipline: rename the file and its `routes.ts` entry together. A file under `app/routes` that no `routes.ts` entry points at is dead code.
 
 **Route files hold composition, not implementation.** A route wires params, data and state to components; the markup lives in `components/<feature>/`.
 
-**Prerendered routes** (`/`, listed in `react-router.config.ts`) render at build time in Node. Nothing they import may touch `window`, `document` or `localStorage` outside an effect or event handler.
+**Prerendered routes** render at build time in Node. They are `PUBLIC_PAGES` in `~/data/navigation` plus `/events/<slug>` for every published event, listed from Supabase in `react-router.config.ts`. Nothing they import may touch `window`, `document` or `localStorage` outside an effect or event handler.
+
+**A public data route has a `loader` and a `clientLoader` that call one local function.** That function does `await import('~/services/event-catalog')`.
+- The `loader` runs at build time, so the HTML carries the data.
+- The `clientLoader` runs on client navigation and for events published after the build (with a `HydrateFallback` skeleton).
+- Never import a service statically in a public route. The import survives the loader being stripped and puts Supabase and zod on every page.
+
+**Booking pages are client-only and `noindex`:** checkout, the ticket page and My Tickets. They use a `clientLoader` or React Query and wrap their content in `QueryProvider`.
 
 ## UI primitives
 
-`app/components/ui/` holds hand-written primitives (`Text`, `Button`, `PopCard`, `Sticker`, `Chip`, `EmojiChip`, `FramedPhoto`, `WhatsAppLink`, `Section`, `Container`, `SwipeGrid`, `Reveal`, `Perforation`, `AnchorLink`, `Logo`, `ThemeToggle`). Variants are declared with `cva` or a variant map inside the primitive.
+`app/components/ui/` holds hand-written primitives. Variants are declared with `cva` or a variant map inside the primitive.
+
+| Group | Primitives |
+|---|---|
+| Type and layout | `Text`, `Section`, `SectionHeading`, `Container`, `SwipeGrid`, `Reveal`, `ButtonRow`, `IconText`, `DashedSection` |
+| Surfaces | `PopCard`, `Sticker`, `Chip`, `EmojiChip`, `EmojiTile`, `Perforation`, `TicketStrip`, `Notice`, `EmptyState`, `Skeleton`, `Spinner` |
+| Media | `FramedPhoto` (`priority` for the above-the-fold photo), `PhotoGrid`, `Polaroid`, `QrCode`, `Logo` |
+| Navigation and actions | `Button`, `AnchorLink` (router link: inline, list, block, heading), `TextLink`, `WhatsAppLink`, `WhatsAppButton`, `ThemeToggle` |
+| Disclosure | `Disclosure`, `Accordion` (native `<details>`), `SegmentedControl`, `FilterChips`, `ChipRow`, `FactRow`, `BulletList`, `TimelineConnector` |
+| Forms | `Field` (hands its control `id`, `aria-invalid`, `aria-describedby`), `Input`, `Select`, `ControlFrame`, `Checkbox`, `FieldError`, `QuantityStepper`, `Sheet` (native `<dialog>`) |
+| Providers | `QueryProvider` (booking pages only), `Toaster` (mounted lazily by the root) |
 
 - **Never restyle a primitive at the call site.** A new look is a new `variant`, added to the primitive.
 - **Add on demand.** Write a primitive when a second screen needs it, not in anticipation.
@@ -165,30 +189,32 @@ The palette is defined once in `app/global.css`: raw values on `:root` (light) a
 
 Never inline these in component files. `hooks/`, `data/` and `lib/` mirror `components/<feature>/`; a file is placed by **the feature it is about, not the feature that imports it**. Only code that belongs to no feature stays at the root (`lib/format.ts`, `data/navigation.ts`). All landing copy lives in `app/data/landing/`, never in JSX.
 
-Query and mutation hooks are created with `react-query-kit` in `hooks/<feature>/queries.ts` and `hooks/<feature>/mutations.ts` once the first service exists.
+Query and mutation hooks are created with `react-query-kit` in `hooks/<feature>/queries.ts` and `hooks/<feature>/mutations.ts`.
 
 ## Data access
 
-There is no backend yet. When one lands (ticketing, payments, My Tickets):
+The backend is Supabase (see [backend.md](backend.md)). `~/services/supabase` holds the typed client, which only persists sessions in the browser.
 
-- **The backend is reached only through `app/services/`.** Components and hooks never call `fetch` or an SDK client directly.
+- **The backend is reached only through `app/services/`.** Components and hooks never call `fetch` or an SDK client directly. Edge functions are called with `supabase.functions.invoke`. Their error body `{ error: { code } }` is read from `error.context` and mapped to copy in `data/<feature>/errors.ts`.
+- **`app/services/events.ts` always filters `status = 'published'`.** A signed-in staff member could otherwise see drafts through RLS. Buyer queries add their own email filter for the same reason.
+- **Lazy-load data code on public pages** with `await import(...)`, as in the route pattern above. The same goes for anything heavy that public pages only need after interaction, such as the share toast and visit tracking.
 - Response types are declared once in `app/types/` (or generated from the schema) and returned from the service. Never a hand-written interface mirroring a generated type.
 - **Payment confirmation is server-side** (gateway verification or webhooks), never trusted from the browser — see the PRD's reliability constraints.
 
-## Mutations (when server state lands)
+## Mutations
 
 **Use `mutate`, never `mutateAsync`.** `mutateAsync` returns a rejecting promise, which forces a `try/catch` at every call site.
 
 - **No `try/catch` in components.**
 - **Handle outcomes in the hook.** `onSuccess` / `onError` on the `createMutation` options is the default home for toasts and cache invalidation. Per-call callbacks (`mutate(vars, { onSuccess })`) are for call-site-specific outcomes such as closing a dialog.
-- **Always toast on mutation success and error** (`react-hot-toast`, added with the first mutation).
+- **Always toast on mutation success and error** (`react-hot-toast`). Give toasts within one flow the same `id` so they replace each other.
 - **Never mirror mutation state into `useState`.** Render from `isPending` and `error`, and call `reset()` when the user backs out.
 - **The only exception is a genuine sequence** — a second request that needs the first one's response. Even then, chain in `onSuccess`.
 
 ## Application rules
 
 - **State:** local state or URL params first. There is no global store.
-- **Server state:** `@tanstack/react-query` via `react-query-kit`, added with the first service.
+- **Server state:** `@tanstack/react-query` via `react-query-kit`, only inside `QueryProvider` (booking pages). Public catalogue data comes from route loaders.
 - **Forms:** `react-hook-form` + Zod (`@hookform/resolvers/zod`), schemas in `app/schemas/`. No per-field `useState`.
 - **A one- or two-line handler belongs in the JSX.** Name it only when it grows past a couple of statements, is used twice, or needs `useCallback`.
 - **Performance:** do not create new objects or functions inline in JSX when the prop feeds a memoized child, a dependency array, or a list row. A trivial inline arrow on a DOM element is fine.
@@ -207,15 +233,17 @@ The landing page talks like a friend hyping the plan: short, playful, meme-liter
 The page is the product's front door; search and share previews are built in, not bolted on.
 
 - **Every route exports `meta` through `buildPageMeta`** (`~/lib/seo/meta`) — title, description, robots, canonical, Open Graph and Twitter in one call. Copy lives in `app/data/<feature>/meta.ts`. Titles stay at or under 60 characters, descriptions at or under 155.
-- **Structured data is one JSON-LD `@graph` per page**, built in `~/lib/seo/` and emitted with `{ 'script:ld+json': … }`. Events use `buildEventSchema`; every new event field Google's Event rich result needs (`description`, `endsAt`, `region`, photo) is required by the `EventPreview` type.
+- **Structured data is one JSON-LD `@graph` per page**, built in `~/lib/seo/` and emitted with `{ 'script:ld+json': … }`. Events use `buildEventSchema`: the event page URL, a `Place` with the venue, and one offer per ticket type on sale. Event pages pass their cover photo as the share image. The FAQ page emits `FAQPage`.
 - **`SITE.url` (`~/data/seo/site`) is the only place the domain is written.** Absolute URLs go through `absoluteUrl`.
-- **`robots.txt`, `sitemap.xml` and `manifest.webmanifest` are resource routes** (`routes/robots[.]txt.ts` …) prerendered to static files. A new public page is added to `SITEMAP_PAGES`; a new image is picked up from its data file.
+- **`robots.txt`, `sitemap.xml` and `manifest.webmanifest` are resource routes** (`routes/robots[.]txt.ts` …) prerendered to static files. A new public page is added to `PUBLIC_PAGES` and `SITEMAP_SETTINGS`. Published events join the sitemap automatically. Booking pages are disallowed in robots.txt.
 - **One `<h1>` per page and no skipped heading levels.** Decorative titles (the hero ticket) are not headings. Every landing `Section` is `aria-labelledby` its `<h2>` via `sectionTitleId`.
 - **Semantic markup for content:** events are `<article>` with a `<time dateTime>`, testimonials are `<figure>` + `<blockquote>` + `<figcaption>`, navs carry `aria-label`.
 - **A link's accessible name contains its visible text.** Don't put an `aria-label` on a link whose text already names it.
 - **Photos render through `FramedPhoto`**, which emits `width`/`height`, `srcset` and `sizes`. Each photo ships at its base size plus the smaller widths in `PHOTO_SHAPES`, named `<name>-<width>.webp` beside the original.
 - **Fonts are self-hosted** (`@fontsource-variable/*`, imported in `global.css`) and the two Latin files used above the fold are preloaded from `FONT_PRELOADS`. No third-party request blocks render.
-- **Check with Lighthouse before handing over** (mobile and desktop presets). The bar: SEO, Accessibility and Best Practices at 100, Performance at 90+ on mobile.
+- **Check with Lighthouse before handing over** (mobile and desktop presets), on `yarn build` output served with the SPA fallback, not the dev server. The bar: SEO, Accessibility and Best Practices at 100, Performance at 90+ on mobile.
+  - On a slow phone network, request count matters as much as bytes. `vite.config.ts` merges React, the router, icons and small shared modules into a few chunks.
+  - A module used by only some pages, and heavy, must be added to `LAZY_ONLY_MODULES` so it stays out of the `shared` chunk.
 
 ## Library CSS loads globally
 
