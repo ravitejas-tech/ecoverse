@@ -2,6 +2,7 @@ import { EmojiChip } from '~/components/ui/emoji-chip'
 import { PopCard } from '~/components/ui/pop-card'
 import { Sticker } from '~/components/ui/sticker'
 import { Text } from '~/components/ui/text'
+import { TimelineConnector } from '~/components/ui/timeline-connector'
 import { cn } from '~/lib/utils'
 import type { JourneyStep as JourneyStepContent } from '~/types/landing'
 
@@ -16,12 +17,7 @@ export function JourneyStep({ step: { title, emoji, body, tone }, number, last }
         <PopCard
             flatOnPhone
             className={cn('relative flex h-full gap-5 sm:flex-col sm:gap-4 sm:p-6 sm:pt-8', !last && 'pb-8')}>
-            {!last && (
-                <span
-                    className='absolute top-18 bottom-2 left-8 -translate-x-1/2 border-l-2 border-dashed border-border sm:hidden'
-                    aria-hidden
-                />
-            )}
+            {!last && <TimelineConnector className='sm:hidden' />}
             <Sticker
                 tone={tone}
                 tilt='hard-left'
