@@ -1,28 +1,18 @@
 import type { ConfettiShape } from '~/data/ui/confetti'
 import type { PopTone } from '~/data/ui/pop-tones'
 import type { Tilt } from '~/data/ui/tilts'
+import type { EventCategory } from '~/types/events'
 import type { Photo } from '~/types/media'
-
-export interface EventPreview {
-    slug: string
-    title: string
-    category: string
-    description: string
-    photo: Photo
-    startsAt: string
-    endsAt: string
-    city: string
-    region: string
-    priceFrom: number
-    tag: string
-    tone: PopTone
-}
 
 export interface Experience {
     title: string
     emoji: string
     caption: string
     tone: PopTone
+}
+
+export interface ExperienceCategory extends Experience {
+    category: EventCategory
 }
 
 export interface JourneyStep {
